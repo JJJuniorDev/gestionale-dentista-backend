@@ -1,0 +1,45 @@
+package testParsing;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+
+public class DateParser {
+
+    public static LocalDateTime parseDateTime(String input) {
+        // GIORNO-MESE-ANNO ORA:MINUTO
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ITALIAN);
+
+        try {
+            // DIVIDI A "DEL" -> input.split(" del ")
+            // parte 1 = "appuntamento"
+            // [[del]]
+            // parte 2 = "27 ottobre 2022 09:00 - Riepilogo"
+            // DIVISIONE 2 -> input.split(" del ")[1].split(" ") divide la parte 2
+            // diventa un array di 6 elementi -> [0] = "27", [1] = "ottobre",
+            // [2] = "2022", [3] = "09:00", [4] = "-", [5] = "Riepilogo"
+            String dateTimePart = input.split(" del ")[1].split(" - ")[0];
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimePart+ " ", formatter);
+            return dateTime;
+        } catch (DateTimeParseException e) {
+            System.out.println("PARSER FALLITO: " + e.getMessage());
+            return null;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("FORMATO INPUT INCORRETTO: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        String input = "Appuntamento del 27 novembre 2022 09:00 - Riepilogo";
+        String input2 = "Appuntamento del 01 marzo 2023 12:00 - Riepilogo";
+        LocalDateTime dateTime = parseDateTime(input2);
+        if (dateTime != null) {
+            System.out.println( dateTime);
+        } else {
+            System.out.println("Fallito");
+        }
+    }
+}

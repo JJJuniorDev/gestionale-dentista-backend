@@ -1,0 +1,45 @@
+package testParsing;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+
+
+public class DateParser {
+
+    public static Date parseDateTime(String input) {
+        // GIORNO-MESE-ANNO ORA:MINUTO
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+
+        try {
+            // DIVIDI A "DEL" -> input.split(" del ")
+            // parte 1 = "appuntamento"
+            // [[del]]
+            // parte 2 = "27 ottobre 2022 09:00 - Riepilogo"
+            // DIVISIONE 2 -> input.split(" del ")[1].split(" - ")[0] divide la parte 2
+            // diventa una stringa -> "27 ottobre 2022 09:00"
+            String dateTimePart = input.split(" del ")[1].split(" - ")[0];
+            Date dateTime = formatter.parse(dateTimePart);
+            return dateTime;
+        } catch (ParseException e) {
+            System.out.println("PARSER FALLITO: " + e.getMessage());
+            return null;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("FORMATO INPUT INCORRETTO: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        String input = "Appuntamento del 27 novembre 2022 09:00 - Riepilogo";
+        String input2 = "Appuntamento del 01 marzo 2023 12:00 - Riepilogo";
+        Date dateTime = parseDateTime(input2);
+        if (dateTime != null) {
+            System.out.println("Parsed date and time: " + dateTime);
+        } else {
+            System.out.println("Failed to parse date and time.");
+        }
+    }
+}

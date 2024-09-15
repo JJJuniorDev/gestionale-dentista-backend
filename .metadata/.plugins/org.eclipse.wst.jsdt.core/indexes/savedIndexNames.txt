@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\Lorenzo DiToma\workspace_personale\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1649544788.index
+1557086155.index
+3275881095.index
+3765416507.index
+381009570.index
+1126863395.index
